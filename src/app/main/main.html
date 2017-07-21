@@ -1,0 +1,45 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <h2>Painel Administrativo</h2>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <button ng-if="!main.emptyList" ng-click="main.openNewClinicModal()" class="btn btn btn-primary">Nova Clínica</button>
+        </div>
+    </div>
+
+    <div ng-if="main.emptyList" class="row text-center" style="margin-top:100px">
+        <div class="col-lg-12">
+            <i style="font-size:172px; color:#e2e3e3" class="fa fa-medkit modal-icon"></i>
+            <h4 style="font-size: 26px; font-weight: 600; padding:20px 0px 0px 0px" class="modal-title">Nenhuma clínica criada</h4>
+        </div>
+        <div class="col-lg-12" style="padding-top:20px">
+            <button ng-click="main.openNewClinicModal()" class="btn btn-md btn-primary">Nova Clínica</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="m-t-lg">
+                <div class="row">
+                    <div ng-repeat="clinic in main.clinics" class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content" style="min-height:100px" ng-style="{'background-color': clinic.bgcolor}"> 
+                                <div style="float:right">
+                                    <img alt="image" class="img-circle" ng-if="clinic.logo" width="70px" height="70px" src="{{clinic.logo.src}}">
+                                </div>
+                                <h1 ng-style="{'color': clinic.fontcolor}" class="no-margins ellipsis">{{clinic.name}}</h1>
+                                <small ng-style="{'color': clinic.fontcolor}">CRM: {{clinic.crm}}</small>
+                            </div>
+                            <div class="ibox-title">
+                                <button type="button" ng-click="main.removeClinic(clinic.$id)" style="margin-left:5px" class="btn btn-danger btn-xs pull-right">Excluir</button>
+                                <button type="button" ng-click="main.openNewClinicModal(clinic);"   class="btn btn-primary btn-xs pull-right">Editar</button>
+                                <button ui-sref="index.categories({ id: clinic.$id })" type="button" style="text-align: left; padding-left: 0px; padding-top:0px" class="btn btn-w-m btn-link"><i class="fa fa-list"></i>  Categorias</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

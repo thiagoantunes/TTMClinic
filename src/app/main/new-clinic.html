@@ -1,0 +1,85 @@
+<div class="inmodal" id="new-clinic-form">
+    <form role="form" name="newClinicForm" ng-submit="main.insertOrUpdate(newClinicForm);" ng-validate="main.newClinicValidationOptions">
+        <div class="modal-header">
+            <h4 class="modal-title">Nova Clínica</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <br/>
+                    <div class="form-group">
+                        <label>Nome:</label>
+                        <input type="text" name="name" ng-model="main.selectedClinic.name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Frase Inicial:</label>
+                        <input type="text" name="slogan" ng-model="main.selectedClinic.slogan" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>CRM:</label>
+                        <input type="text" name="crm" ng-model="main.selectedClinic.crm" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição:</label>
+                        <input name="desc" ng-model="main.selectedClinic.description" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Login:</label>
+                        <input type="email" ng-disabled="main.selectedClinic.$id" name="login" ng-model="main.selectedClinic.login" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Senha:</label>
+                        <div class="input-group">
+                            <input ng-init="inputType = 'password'" ng-disabled="main.selectedClinic.$id" type="{{inputType}}" name="password" ng-model="main.selectedClinic.password" class="form-control">
+                            <span class="input-group-btn"> 
+                                <button type="button" ng-class="{'active' : inputType == 'text'}" ng-click="inputType == 'password' ? inputType = 'text' : inputType = 'password'" class="btn btn-white"><i class="fa fa-eye"></i></button> 
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <h4>Configurações de layout</h4>
+
+                    <p ng-if="!main.selectedClinic.logo">Selecione a logo:</p>
+
+                    <p class="text-center">
+                        <div class="dropzon"  ng-click="main.openSelectLogoModal()" ng-if="!main.selectedClinic.logo">
+                            <a href=""><i class="fa fa-cloud-upload big-icon"></i></a>
+                        </div>
+                        <div style="padding:20px 0px" ng-if="main.selectedClinic.logo" class="m-b-sm">
+                            <img alt="image" class="img-circle" width="90px" height="90px" src="{{main.selectedClinic.logo.src}}">
+                        </div>
+                    </p>
+                    <button ng-if="main.selectedClinic.logo" type="button" style="margin-bottom:20px" class="btn btn-white btn-sm" ng-click="main.openSelectLogoModal()">Alterar imagem</button>
+                    <button ng-if="main.selectedClinic.logo" type="button" style="margin-bottom:20px" class="btn btn-white btn-sm" ng-click="main.selectedClinic.logo = null">Excluir imagem</button>
+                    <div class="form-group">
+                        <label>Cor de Fundo: 
+                    <input colorpicker type="text" name="bgcolor" ng-model="main.selectedClinic.bgcolor" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Cor da Fonte: 
+                        <input colorpicker type="text" name="fontcolor" ng-model="main.selectedClinic.fontcolor" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="main.closeNewClinicModal()">Fechar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/ng-template" id="select-logo-modal.html">
+    <div class="inmodal">
+        <div class="modal-header">
+        </div>
+        <div class="modal-body">
+            <file-select selection="main.selectedClinic.logo" multi="false" type="'image'"></file-select>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="main.imagesModal.dismiss();">Fechar</button>
+        </div>
+    </div>
+</script>

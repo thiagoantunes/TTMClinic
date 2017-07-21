@@ -1,0 +1,281 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+    <h2>{{vm.clinic.name}}</h2>
+    <hr>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        Categorias
+                    </h5>
+                </div>
+                <div class="ibox-content">
+
+                    <form role="form" name="newCategoryForm" class="form-inline" ng-submit="vm.createCategory(newCategoryForm);" ng-validate="vm.newCategoryValidationOptions">
+                        <div class="form-group">
+
+                            <label for="categoryName" class="sr-only">Nova Categoria</label>
+                            <input type="text" placeholder="Nova Categoria" ng-model="vm.newCategoryName" id "categoryName" name="name" class="form-control">
+                        </div>
+                        <button class="btn btn-white" type="submit">Salvar</button>
+                    </form>
+                    <hr>
+
+                    <uib-accordion close-others="false">
+                        <div ng-repeat="cat in vm.categories" style="max-height: 350px; overflow: auto;" uib-accordion-group class="panel-default">
+                            <uib-accordion-heading>
+                                {{cat.name}} <i class="pull-right fa fa-trash fa-lg" ng-click="vm.removeCategory(cat, $event);"></i>
+                            </uib-accordion-heading>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="button" ng-click="vm.createItem(cat)" class="btn btn-primary btn-xs">Novo Item</button>
+                                </div>
+                            </div>
+                            <br><br><br>
+                            <div ng-repeat="($id, item) in cat.items">
+                                <div class="row">
+                                    <div class="col-md-9" ng-click="vm.selectItem(cat, $id)" style="font-size: 1.2em;">
+                                        {{item.title}} <br>
+                                        <span style="color:#ccc; font-size:0.8em">{{item.subTitle}}</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <i class="pull-right fa fa-trash fa-lg" ng-click="vm.removeItem(cat, $id);"></i>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                    </uib-accordion>
+
+
+
+                    <!--<ol>
+                        <li ng-repeat="cat in vm.categories">
+                            {{cat.name}} <button ng-click="vm.createItem(cat)">Novo Item</button>
+                            <ol>
+                                <li ng-repeat="($id, item) in cat.items">
+                                    {{item.title}}
+                                    <button ng-click="vm.selectItem(cat, $id)">View</button>
+                                    <button ng-click="vm.removeItem(cat, $id)">Excluir</button>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>-->
+                </div>
+            </div>
+
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>
+                        Banners
+                    </h5>
+                </div>
+                <div class="ibox-content">
+
+                    <form role="form" name="newBannerForm" class="form-inline" ng-submit="vm.createBanner(newBannerForm);" ng-validate="vm.newBannerValidationOptions">
+                        <div class="form-group">
+
+                            <label for="bannerName" class="sr-only">Novo Banner</label>
+                            <input type="text" placeholder="Novo Banner" ng-model="vm.newBannerName" id "bannerName" name="name" class="form-control">
+                        </div>
+                        <button class="btn btn-white" type="submit">Salvar</button>
+                    </form>
+                    <hr>
+
+                    <uib-accordion close-others="false">
+                        <div ng-repeat="banner in vm.banners" uib-accordion-group class="panel-default">
+                            <uib-accordion-heading>
+                                {{banner.name}} <i class="pull-right fa fa-trash fa-lg" ng-click="vm.removeBanner(banner, $event);"></i>
+                            </uib-accordion-heading>
+                            <p ng-if="!banner.src">Selecione o banner:</p>
+
+                            <p class="text-center">
+                                <div class="dropzon text-center" ng-click="vm.openSelectBannerModal(banner)" ng-if="!banner.src">
+                                    <a href=""><i class="fa fa-cloud-upload big-icon"></i></a>
+                                </div>
+                                <div style="padding:20px 0px" ng-if="banner.src" class="m-b-sm text-center">
+                                    <button type="button" style="margin-bottom:30px" class="btn btn-white btn-sm" ng-click="vm.openSelectBannerModal(banner)">Alterar imagem</button>
+                                    <img alt="image" width="100%" src="{{banner.src}}">
+                                </div>
+                            </p>
+                        </div>
+                    </uib-accordion>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-7" ng-if="vm.selectedItem">
+            <div class="ibox ">
+                <div class="ibox-content" style="padding:0px">
+                    <main class="md-container page">
+                        <div class="video cover">
+                            <video ng-if="vm.selectedItem.cover.type == 'video'" height="240" controls>
+                                <source src="{{vm.selectedItem.cover.src}}" type="video/mp4"> Seu dispositivo não suporta a reprodução deste tipo de arquivo.
+                            </video>
+                            <div ng-if="vm.selectedItem.cover.type == 'image'" style="background-image:url('{{vm.selectedItem.cover.src}}'); background-size: cover;"
+                                class="image-cover"></div>
+                            <div class="cover-overlay">
+                                <div class="form-group" style="color:white">
+                                    <!--<label>Tipo da capa:</label>-->
+                                    <!--<div class="row">
+                                        <div class="col-md-offset-3 col-md-3">
+                                            <div>
+                                                <label><input icheck type="radio" value="image" name="radioTest" ng-model="vm.selectedItem.cover.type"> Imagem </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div>
+                                                <label><input icheck type="radio" value="video" name="radioTest" ng-model="vm.selectedItem.cover.type"> Vídeo </label>
+                                            </div>
+                                        </div>
+                                    </div>-->
+                                </div>
+                                <button type="button" style="width: 200px" class="btn btn-white" ng-click="vm.openSelectImageCoverModal();">SELECIONAR IMAGEM</button>
+                                <div class="form-group" style="width: 200px; padding-top: 20px; margin: 0 auto;">
+                                    <h3 style="color: white ; text-align:left">Id do vídeo</h3>
+                                    <h6 style="color: white; text-align:left">Caso esta categoria possua um vídeo informe o seu ID do YouTube</h6>
+                                    <input type="text" ng-model="vm.selectedItem.cover.videoId" ng-blur="vm.saveItem();" id "categoryName" name="name" class="form-control">
+                                </div>
+                                <!--<button ng-if="vm.selectedItem.cover.type == 'video'" type="button" class="btn btn-white" ng-click="vm.openSelectVideoCoverModal();">SELECIONAR VÍDEO</button>-->
+                            </div>
+                        </div>
+                        <div class="md-content">
+                            <header>
+                                <div class="md-title-container">
+                                    <div class="md-title">
+                                        <div style="display:table-row">
+                                            <h2 ng-if="!vm.editTitle" style="float:left; max-width:60%" class="dark">{{vm.selectedItem.title}}</h2>
+                                            <div ng-if="vm.editTitle" style="float:left; width:60%" class="form-group">
+                                                <input type="text" name="price" ng-model="vm.selectedItem.title" class="form-control">
+                                            </div>
+                                            <i ng-if="!vm.editTitle" ng-click="vm.editTitle = true" style="font-size:1.2em;  padding: 5px 15px;" class="fa fa-pencil"></i>
+                                            <i ng-if="vm.editTitle" ng-click="vm.saveItem(); vm.editTitle = false" style="font-size:1.2em; padding: 0px 15px;" class="fa fa-check"></i>
+                                        </div>
+                                        <br/>
+                                        <div style="display:table-row">
+                                            <span ng-if="!vm.editSubTitle && !vm.selectedItem.subTitle" ng-click="vm.editSubTitle = true" style="float:left; max-width:40%; cursor:pointer"
+                                                class="label dark subheader">Subtitulo</span>
+                                            <span ng-if="!vm.editSubTitle" style="float:left; max-width:40%" class="label dark">{{vm.selectedItem.subTitle}}</span>
+                                            <div ng-if="vm.editSubTitle" style="float:left; width:40%" class="form-group">
+                                                <input type="text" name="price" ng-model="vm.selectedItem.subTitle" class="form-control">
+                                            </div>
+                                            <i ng-if="!vm.editSubTitle" ng-click="vm.editSubTitle = true" style="font-size:1.2em; padding: 0px 15px;" class="fa fa-pencil"></i>
+                                            <i ng-if="vm.editSubTitle" ng-click="vm.saveItem(); vm.editSubTitle = false" style="font-size:1.2em; padding: 0px 15px;"
+                                                class="fa fa-check"></i>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="md-price">
+                                        <div style="display:table-row">
+                                            <div ng-if="!vm.editPrice" style="float:left;">
+                                                <span ng-if="!vm.selectedItem.price" ng-click="vm.editPrice = true" style="cursor:pointer" class="label dark subheader">Preço</span>
+                                                <span ng-if="vm.selectedItem.priceTimes && vm.selectedItem.priceTimes > 1" class="label dark">{{vm.selectedItem.priceTimes}}x</span>
+                                                <span ng-if="vm.selectedItem.price && vm.selectedItem.priceTimes && vm.selectedItem.priceTimes > 1" class="price dark">R${{ ( vm.selectedItem.price / vm.selectedItem.priceTimes )| currency:"":2 }}</span>
+                                                <span ng-if="vm.selectedItem.price && !vm.selectedItem.priceTimes || vm.selectedItem.priceTimes == 1" class="price dark">R${{vm.selectedItem.price  | currency:"":2}}</span>
+                                            </div>
+                                            <div ng-if="vm.editPrice" style="float:left;" class="form-group">
+                                                <input type="text" name="price" ui-money-mask ng-model="vm.selectedItem.price" class="form-control">
+                                            </div>
+                                            <i ng-if="!vm.editPrice" ng-click="vm.editPrice = true" style="font-size:1.2em; padding: 0px 15px;" class="fa fa-pencil"></i>
+                                            <i ng-if="vm.editPrice" ng-click="vm.saveItem(); vm.editPrice = false" style="font-size:1.2em; padding: 0px 15px;" class="fa fa-check"></i>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </header>
+                            <article>
+                                <section class="info">
+                                    <div style="display:table-row">
+                                        <div style="float:left;">
+                                            <span ng-click="vm.editDescription = true" style="cursor:pointer" class="label subheader dark">Descrição</span>
+                                        </div>
+                                        <i ng-if="!vm.editDescription" ng-click="vm.editDescription = true" style="font-size:1.2em; padding: 0px 15px;" class="fa fa-pencil"></i>
+                                        <i ng-if="vm.editDescription" ng-click="vm.saveItem(); vm.editDescription = false" style="font-size:1.2em; padding: 0px 15px;"
+                                            class="fa fa-check"></i>
+                                    </div>
+                                    <div ng-if="!vm.editDescription" ng-bind-html="vm.selectedItem.description"></div>
+                                    <div ng-if="vm.editDescription" style="float:left;" class="form-group">
+                                        <div trumbowyg-ng ng-model="vm.selectedItem.description" editor-config="vm.editorConfig">
+                                        </div>
+                                    </div>
+                                </section>
+                                <div style="display:table-row">
+                                    <span class="label subheader dark" ng-click="vm.openSelectImagesModal();" style="padding-left: 96px; float:left ;cursor:pointer">Fotos</span>
+                                    <i ng-click="vm.openSelectImagesModal();" style="font-size:1.2em; padding: 0px 15px;" class="fa fa-pencil"></i>
+                                </div>
+
+                                <section class="fotos">
+                                    <ul style="width: calc(300px * 4); padding-right:28px;">
+                                        <li ng-repeat="img in vm.selectedItem.images">
+                                            <div class="picture">
+                                                <img src="{{img.src}}">
+                                            </div>
+                                            <div class="description">
+                                                <h3 class="light">{{img.title}}</h3>
+                                                <span class="label light">{{img.subTitle}}</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </section>
+                            </article>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="select-images-modal.html">
+    <div class="inmodal">
+        <div class="modal-header">
+        </div>
+        <div class="modal-body">
+            <file-select selection="vm.selectedItem.images" multi="true" type="'image'"></file-select>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="vm.saveItem(); vm.imagesModal.dismiss();">Fechar</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="select-cover-image-modal.html">
+    <div class="inmodal">
+        <div class="modal-header">
+        </div>
+        <div class="modal-body">
+            <file-select selection="vm.selectedItem.cover" multi="false" type="'image'"></file-select>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="vm.saveItem(); vm.coverImageModal.dismiss();">Fechar</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="select-cover-video-modal.html">
+    <div class="inmodal">
+        <div class="modal-header">
+        </div>
+        <div class="modal-body">
+            <file-select selection="vm.selectedItem.images" multi="false" type="'video'"></file-select>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="vm.saveItem(); vm.coverVideoModal.dismiss();">Fechar</button>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="select-banner-modal.html">
+    <div class="inmodal">
+        <div class="modal-header">
+        </div>
+        <div class="modal-body">
+            <file-select selection="vm.selectedBanner" multi="false" type="'image'"></file-select>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-white" ng-click="vm.saveBanner();">Fechar</button>
+        </div>
+    </div>
+</script>

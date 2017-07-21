@@ -1,0 +1,75 @@
+<div class="tabs-container">
+
+    <uib-tabset ng-if="!selectedImage">
+        <uib-tab heading="Galeria">
+            <div class="panel-body" style="height:50vh; overflow: scroll">
+                <div id="row">
+                    <div ng-repeat="img in images" class="col-sm-4" style="padding:5px">
+                        <a ng-click="img.checked = !img.checked; addFile(img);" class="thumbnail" style="overflow:hidden; padding:0px; height:150px; margin-bottom:0px"
+                            ng-class="{active: img.checked}">
+                            <div class="image">
+                                <img src="{{img.$value}}" class="img img-responsive full-width" />
+                            </div>
+                        </a>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" ng-click="deleteImage(img);" style="width:100%" class="btn btn-xs btn-outline btn-link">Excluir <i class="fa fa-times"></i></button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" ng-click="selectImageToCrop(img);" style="width:100%" class="btn btn-xs btn-outline btn-link">Cortar <i class="fa fa-crop"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="row">
+                    <div ng-repeat="video in videos" class="col-sm-6" style="padding:5px">
+                        <a ng-click="video.checked = !video.checked; addFile(video);" class="thumbnail" style="overflow:hidden; padding:0px; height:150px"
+                            ng-class="{active: video.checked}">
+                            <div class="image">
+                                <video controls>
+                                    <source src="{{video.$value}}" type="video/mp4"> Seu dispositivo não suporta a reprodução deste tipo de arquivo.
+                                </video>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab heading="Upload de arquivos">
+            <div class="panel-body" style="height:300px; padding:25px">
+                <div ngf-select="uploadFiles($files);" ngf-drop="uploadFiles($files);" ng-model="files" ngf-keep="true" ngf-multiple="true"
+                    style="cursor:pointer; font-weight:bold;  color:#ccc; font-size: 1.2em; background: #F8F8F8; border: 5px dashed #DDD;width: 100%; text-align: center; padding: 30px 10px;">
+                    <a href=""><i class="fa fa-cloud-upload big-icon"></i></a><br> Arraste e solte ou clique para adicionar
+                    arquivos
+                </div>
+                <div style="margin-top:20px" ng-show="progress >= 0" class="progress progress-small">
+                    <div style="width: {{progress}}%;" class="progress-bar"></div>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+    <div ng-if="selectedImage" style="background: white; width:100%; height:50vh; text-align:center; padding-top: 20px">
+        <div style="overflow: hidden; width:600px; height:350px; margin:0 auto;">
+            <ui-cropper image="selectedImage" area-type="rectangle" result-image="myCroppedImage" result-blob="myCroppedImageblob" result-image-size="'max'"></ui-cropper>
+        </div>
+        <button type="button" style="margin-top:20px" ng-click="uploadImageAsPromise(myCroppedImageblob); " class="btn btn-primary ">Cortar Imagem</button>
+        <button type="button" style="margin-top:20px" ng-click="cancelCrop();" class="btn btn-w-m btn-link ">Cancelar</button>
+
+        <!--<div><img width="200px" ng-src="{{myCroppedImage}}" /></div>
+        <table>
+            <td>
+                <div style="overflow: hidden; width:500px; height:350px;">
+                    <ui-cropper image="myImage" area-type="square" result-image="myCroppedImage" result-blob="myCroppedImageblob" result-image-size="'max'"></ui-cropper>
+                </div>
+
+            </td>
+            <td>
+                <div><img width="200px" ng-src="{{myCroppedImage}}" /></div>
+                <button ng-click="uploadImageAsPromise(myCroppedImageblob)">Teste</button>
+                <div style="margin-top:20px" ng-show="progress >= 0" class="progress progress-small">
+                    <div style="width: {{progress}}%;" class="progress-bar"></div>
+                </div>
+            </td>
+        </table>-->
+    </div>
+</div>
